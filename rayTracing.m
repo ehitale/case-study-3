@@ -8,7 +8,7 @@ start_10mm = zeros(4, numberOfAngles);
 start_0mm(2, :) = angles; % x1 = 0, theta_x_1 = -pi/20 to pi/20, y1 = 0, theta_y_1 = 0;
 start_10mm(2, :) = angles;
 
-start_10mm(1, :) = .10;
+start_10mm(1, :) = .010;
 % matrix of angles
 
 d_1 = 0.2; % millimeters
@@ -20,7 +20,14 @@ free_space_1 = [
     0, 1, 0, 0;
     0, 0, 1, d_1;
     0, 0, 0, 1
-    ]; % d represents the distance propogated. 
+    ]; % d_1 represents the distance the rays propogated before the lens. 
+
+lens = [
+    1, 0, 0, 0;
+    -1/f, 1, 0, 0;
+    0, 0, 1, 0;
+    0, 0, -1/f, 1
+    ]; % lens represents the distance propogated through the lens. 
 
 d_2 = ((1/f) - (1/d_1))^(-1);
 
@@ -29,14 +36,7 @@ free_space_2 = [ % solve for the new d
     0, 1, 0, 0;
     0, 0, 1, d_2;
     0, 0, 0, 1
-    ]; % d represents the distance propogated. 
-
-lens = [
-    1, 0, 0, 0;
-    -1/f, 1, 0, 0;
-    0, 0, 1, 0;
-    0, 0, -1/f, 1
-    ]; % d represents the distance propogated. 
+    ]; % d_1 represents the distance the rays propogated after the lens. 
 
 figure;
 
@@ -89,4 +89,4 @@ title("Image System");
 %     hold on;
 % end
 % 
-% hold off; 
+hold off; 
