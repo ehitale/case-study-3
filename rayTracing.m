@@ -13,7 +13,7 @@ start_10mm(1, :) = .010;
 
 d_1 = 0.2; % millimeters
 
-f = .150;
+f = .150; % millimeters
 
 free_space_1 = [
     1, d_1, 0, 0;
@@ -29,7 +29,7 @@ lens = [
     0, 0, -1/f, 1
     ]; % lens represents the distance propogated through the lens. 
 
-d_2 = ((1/f) - (1/d_1))^(-1);
+d_2 = ((1/f) - (1/d_1))^(-1); % millimeters
 
 free_space_2 = [ % solve for the new d
     1, d_2, 0, 0;
@@ -61,15 +61,6 @@ hold on;
 xlabel("z (m)");
 ylabel("x (m)");
 title("Image System");
-
-% end_0mm = lens * middle_0mm;
-% end_10mm = lens * middle_10mm;
-% 
-% plot([zeros(1, 8); d*ones(1, 8)], [middle_0mm(1, :); end_0mm(1, :)], "g");
-% hold on;
-% 
-% plot([zeros(1, 8); d*ones(1, 8)], [middle_10mm(1, :); end_10mm(1, :)], "y");
-% hold on;
 
 % figure;
 % 
