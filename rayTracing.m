@@ -58,6 +58,10 @@ hold on;
 plot([d_1*ones(1, 8); (d_1 + 0.5)*ones(1, 8)], [middle_10mm(1, :); end_10mm(1, :)], "y");
 hold on;
 
+xlabel("z (m)");
+ylabel("x (m)");
+title("Image System");
+
 % end_0mm = lens * middle_0mm;
 % end_10mm = lens * middle_10mm;
 % 
