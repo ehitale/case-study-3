@@ -1,56 +1,12 @@
 load("lightField.mat") % rays is in meters
 
 figure;
-histogram(rays(1, :));
-title "x"
+[img_avocado, ~, ~] = rays2img(avocado(1, :), avocado(3, :), .005, 800);
 
-brookings = rays(:, (rays(1, :) <= 0.01) & rays(1, :) >= -0.049);
-% brookings(1, :) = brookings(1, :) + 83;
-avocado = rays(:, (rays(1, :) <= 0.01 & rays(1, :) >= -0.01));
-logo = rays(:, (rays(1, :) >= 0.03));
 
-% 'brookings', 'avocado', and 'logo' are all logically indexed portions
-% of rays. 
-
-figure;
-[img_initial, ~, ~] = rays2img(logo(1, :), logo(3, :), .25, 1000);
 % A 'sharper' image cannot be obtained by changing the sensor width, or the amount of pixels alone.   
-% Do something to img_initial so that you just have the lit up values for 
 
-rowCount = 0;
-rowIndices = zeros(1, size(img_initial, 1));
-columnCount = 0;
-
-for i = 1:size(img_initial, 1)
-    if (sum(img_initial(i, :) ~= 0))
-        if (rowCount < sum(img_initial(i, :) ~= 0))
-            rowCount = sum(img_initial(i, :) ~= 0);
-        end
-    end
-end
-
-for j = 1:size(img_initial, 2) 
-    if (sum(img_initial(:, j) ~= 0))
-        if (columnCount < sum(img_initial(:, j) ~= 0))
-            columnCount = sum(img_initial(:, j) ~= 0);
-        end
-    end
-end
-
-fittedImage = zeros(rowCount, columnCount);
-
-for i = 1:rowCount
-    for j = 1:size(img_initial, 1)
-        if (sum(img_initial(j, :) ~= 0))
-            fittedImage(1, :) = img_initial(j, :)
-        end
-    end
-end
-
-% The code above is supposed to index the initial image with the parameters
-% defined by the fitted image. 
-
-imshow(img_initial);
+imshow(img_avocado);
 title("initial");
 hold off;
 
@@ -184,92 +140,38 @@ hold off;
 
 %% Locating three images - Competition
 % figure;
+% histogram(rays(1, :));
+% title "x"
 % 
-% avo_prop_1 = [
-%         1, 5, 0, 0;
-%         0, 1, 0, 0;
-%         0, 0, 1, 5;
-%         0, 0, 0, 1
-%     ];
+% brookings = rays(:, (rays(1, :) <= 0.01) & rays(1, :) >= -0.049);
+% logo = rays(:, (rays(1, :) >= 0.03));
 % 
-% f_final = (1/1 + 1/5)^(-1);
+% [img_brookings, ~, ~] = rays2img(brookings(1, :), brookings(3, :), .25, 1000);
+% [img_logo, ~, ~] = rays2img(logo(1, :), logo(3, :), .25, 1000);
+
+
+% 'brookings', 'avocado', and 'logo' are all logically indexed portions
+% of rays. 
+
+
+% rows = size(img_initial, 1);
 % 
-% avo_lens = [
-%         1, 0, 0, 0;
-%         -1/f_final, 1, 0, 0;
-%         0, 0, 1, 0;
-%         0, 0, -1/f_final, 1
-%     ];
+% for i = 1:rows
+%     if (sum(img_(i, :) == 0))
+%         img_initial(i, :) = [];
+%         rows = size(img_initial, 1);
+%     end
+% end
 % 
-% avo_prop_2 = [
-%         1, 1, 0, 0;
-%         0, 1, 0, 0;
-%         0, 0, 1, 1;
-%         0, 0, 0, 1
-%     ];
+% columns = size(img_initial, 2);
 % 
-% compImageSystem = comp_prop_2 * (comp_lens * comp_prop_1);
-% compImage = compImageSystem * rays;
-% 
-% [img, x, y] = rays2img(compImage(1, :), compImage(3, :), .04, 1500);
-% imshow(img(floor(end/3):floor(2*end/3), (1:floor(end/3))));
-% figure;
-% 
-% brook_prop_1 = [
-%         1, 5, 0, 0;
-%         0, 1, 0, 0;
-%         0, 0, 1, 5;
-%         0, 0, 0, 1
-%     ];
-% 
-% f_final = (1/1 + 1/5)^(-1);
-% 
-% brook_lens = [
-%         1, 0, 0, 0;
-%         -1/f_final, 1, 0, 0;
-%         0, 0, 1, 0;
-%         0, 0, -1/f_final, 1
-%     ];
-% 
-% brook_prop_2 = [
-%         1, 1, 0, 0;
-%         0, 1, 0, 0;
-%         0, 0, 1, 1;
-%         0, 0, 0, 1
-%     ];
-% 
-% compImageSystem = comp_prop_2 * (comp_lens * comp_prop_1);
-% compImage = compImageSystem * rays;
-% 
-% [img, x, y] = rays2img(compImage(1, :), compImage(3, :), .04, 1500);
-% imshow(img(floor(end/3):floor(2*end/3), (1:floor(end/3))));
-% figure;
-% 
-% washu_prop_1 = [
-%         1, 5, 0, 0;
-%         0, 1, 0, 0;
-%         0, 0, 1, 5;
-%         0, 0, 0, 1
-%     ];
-% 
-% f_final = (1/1 + 1/5)^(-1);
-% 
-% washu_lens = [
-%         1, 0, 0, 0;
-%         -1/f_final, 1, 0, 0;
-%         0, 0, 1, 0;
-%         0, 0, -1/f_final, 1
-%     ];
-% 
-% washu_prop_2 = [
-%         1, 1, 0, 0;
-%         0, 1, 0, 0;
-%         0, 0, 1, 1;
-%         0, 0, 0, 1
-%     ];
-% 
-% compImageSystem = comp_prop_2 * (comp_lens * comp_prop_1);
-% compImage = compImageSystem * rays;
-% 
-% [img, x, y] = rays2img(compImage(1, :), compImage(3, :), .04, 1500);
-% imshow(img(floor(end/3):floor(2*end/3), (1:floor(end/3))));
+% for j = 1:columns
+%     if (sum(img_initial(:, j) ~= 0))
+%         img_initial(:, j) = [];
+%         columns = size(img_inital, 2);
+%     end
+% end
+
+% I was trying to remove the black bars on either side of either image when
+% I ran into trouble. As is, the images are not centered, so the function
+% rays2img doesn't work as intended. 
