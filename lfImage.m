@@ -1,5 +1,7 @@
 load("lightField.mat") % rays is in meters
 
+avocado = rays(:, (rays(1, :) <= 0.01 & rays(1, :) >= -0.01));
+
 figure;
 [img_avocado, ~, ~] = rays2img(avocado(1, :), avocado(3, :), .005, 800);
 
@@ -133,21 +135,22 @@ imageSystem = final_prop_2 * (final_lens * final_prop_1);
 image = 2 * imageSystem * rays;
 [img, x, y] = rays2img(image(1, :), image(3, :), .005, 800);
 imshow(img);
+title final
 hold off;
 
 % The image above appears to be depicting an avocado reclining in a chair,
 % perhaps speaking to a therapist.
 
 %% Locating three images - Competition
-% figure;
-% histogram(rays(1, :));
-% title "x"
-% 
-% brookings = rays(:, (rays(1, :) <= 0.01) & rays(1, :) >= -0.049);
-% logo = rays(:, (rays(1, :) >= 0.03));
-% 
-% [img_brookings, ~, ~] = rays2img(brookings(1, :), brookings(3, :), .25, 1000);
-% [img_logo, ~, ~] = rays2img(logo(1, :), logo(3, :), .25, 1000);
+figure;
+histogram(rays(1, :));
+title "x"
+
+brookings = rays(:, (rays(1, :) <= -0.035) & rays(1, :) >= -0.049);
+logo = rays(:, (rays(1, :) >= 0.03));
+
+[img_brookings, ~, ~] = rays2img(brookings(1, :), brookings(3, :), .10, 1000);
+[img_logo, ~, ~] = rays2img(logo(1, :), logo(3, :), .10, 1000);
 
 
 % 'brookings', 'avocado', and 'logo' are all logically indexed portions
@@ -175,3 +178,9 @@ hold off;
 % I was trying to remove the black bars on either side of either image when
 % I ran into trouble. As is, the images are not centered, so the function
 % rays2img doesn't work as intended. 
+
+figure;
+imshow(img_brookings)
+
+figure;
+imshow(img_logo)
